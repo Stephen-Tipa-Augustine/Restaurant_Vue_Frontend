@@ -27,7 +27,7 @@
             <div style="width: 100%; display: block;">
               <div style="text-align: center">
                 <div class="spinner-border text-success" role="status">
-                  <span class="sr-only">Loading...</span>
+                  <span class="sr-only"></span>
                 </div>
               </div>
             </div>

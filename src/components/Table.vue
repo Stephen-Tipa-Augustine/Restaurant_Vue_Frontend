@@ -7,35 +7,35 @@
           <p>We always appreciate when customers book before hand before they come to the restaurant, this eases planning.</p>
         </div>
 
-        <form @submit.prevent="bookTable" method="post" role="form" class="php-email-form">
+        <form @submit.prevent="bookTable" class="php-email-form">
           <div class="row">
             <div class="col-lg-4 col-md-6 form-group">
-              <input type="text" name="name" class="form-control" v-model="form.name" id="name" placeholder="Your Name" data-rule="minlen:4" data-msg="Please enter at least 4 chars">
+              <input type="text" name="name" class="form-control" required v-model="form.name" id="name" placeholder="Your Name" data-rule="minlen:4" data-msg="Please enter at least 4 chars">
               <div class="validate"></div>
             </div>
             <div class="col-lg-4 col-md-6 form-group mt-3 mt-md-0">
-              <input type="email" class="form-control" name="email" v-model="form.email" id="email" placeholder="Your Email" data-rule="email" data-msg="Please enter a valid email">
+              <input type="email" class="form-control" name="email" required v-model="form.email" id="email" placeholder="Your Email" data-rule="email" data-msg="Please enter a valid email">
               <div class="validate"></div>
             </div>
             <div class="col-lg-4 col-md-6 form-group mt-3 mt-md-0">
-              <input type="text" class="form-control" name="phone" id="phone" v-model="form.phone" placeholder="Your Phone" data-rule="minlen:4" data-msg="Please enter at least 4 chars">
+              <input type="text" class="form-control" name="phone" required id="phone" v-model="form.phone" placeholder="Your Phone" data-rule="minlen:4" data-msg="Please enter at least 4 chars">
               <div class="validate"></div>
             </div>
             <div class="col-lg-4 col-md-6 form-group mt-3">
-              <input type="text" name="date" class="form-control" id="date" v-model="form.date" placeholder="Date" data-rule="minlen:4" data-msg="Please enter at least 4 chars">
+              <input type="text" name="date" class="form-control" required id="date" v-model="form.date" placeholder="Date" data-rule="minlen:4" data-msg="Please enter at least 4 chars">
               <div class="validate"></div>
             </div>
             <div class="col-lg-4 col-md-6 form-group mt-3">
-              <input type="text" class="form-control" name="time" id="time" v-model="form.time" placeholder="Time" data-rule="minlen:4" data-msg="Please enter at least 4 chars">
+              <input type="text" class="form-control" name="time" required id="time" v-model="form.time" placeholder="Time" data-rule="minlen:4" data-msg="Please enter at least 4 chars">
               <div class="validate"></div>
             </div>
             <div class="col-lg-4 col-md-6 form-group mt-3">
-              <input type="number" class="form-control" name="people" id="people" v-model="form.people" placeholder="# of people" data-rule="minlen:1" data-msg="Please enter at least 1 chars">
+              <input type="text" class="form-control" name="people" required id="people" v-model="form.people" placeholder="# of people" data-rule="minlen:1" data-msg="Please enter at least 1 chars">
               <div class="validate"></div>
             </div>
           </div>
           <div class="form-group mt-3">
-            <textarea class="form-control" name="message" rows="5" v-model="form.message" placeholder="Message"></textarea>
+            <textarea class="form-control" name="message" required rows="5" v-model="form.message" placeholder="Message"></textarea>
             <div class="validate"></div>
           </div>
           <div class="container">
@@ -70,10 +70,10 @@ export default {
         phone: '',
         date: '',
         time: '',
-        people: 0,
+        people: '',
         message: ''
       },
-      error: 'amd',
+      error: null,
       registered: false,
       registering: false,
     }
@@ -89,6 +89,7 @@ export default {
   methods: {
     bookTable() {
       this.registering = true;
+      this.error = null;
       this.axios.post('http://localhost:9000/api/services/add-booking', this.form,
               {
                   headers: {
@@ -97,10 +98,8 @@ export default {
                 })
           .then((res) => {
                //Perform Success Action
-            console.log(res.data)
             this.registered = true;
             if (res.data.message === 'News added successfully!') {
-              console.log('News added, close this modal')
               this.registered = true;
             }
            })
@@ -110,7 +109,6 @@ export default {
              this.error = 'Error encountered, please check your values!';
            }).finally(() => {
                //Perform action in always
-              console.log('axios successfully invoked')
               this.registering = false
            });
     },
